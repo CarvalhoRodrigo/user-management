@@ -1,0 +1,55 @@
+---
+# tasks file for user-bastion
+
+- name: "Check required variables"
+  fail:
+    msg: "Variable '{{ item }}' is not defined. Please refer to README file."
+  when: item not in vars
+  with_items: "{{required_vars}}"
+
+- name: Creating groups
+  group:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - "{{ list_of_groups }}"
+
+- name: Creating users
+  user:
+    name: "{{item.name}}"
+    state: present
+    groups: "{{item.group}}"
+  with_items:
+    - "{{ list_of_users }}"
+
+- name: adding authorizing key for each users
+  authorized_key:
+    user: "{{item.name}}"
+    key: "{{ lookup('file', playbook_dir + '/' + item.public_key_path) }}"
+    exclusive: yes
+  with_items:
+    - "{{ list_of_users }}"
+
+- name: Make sure we have a 'wheel' group
+  group:
+    name: wheel
+    state: present
+
+- name: Allow 'wheel' group to have passwordless sudo
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^%wheel'
+    line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+    validate: 'visudo -cf %s'
+
+- name: Add sudoers users to wheel group
+  user:
+    name: "{{item.name}}"
+    groups: wheel
+    append: yes
+    state: present
+    createhome: yes
+  with_items:
+    - "{{ list_of_users }}"
+  when: item.sudo

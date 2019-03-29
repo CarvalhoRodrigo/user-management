@@ -1,0 +1,6 @@
+---
+# defaults file for user-bastion
+
+required_vars:
+  - list_of_groups
+  - list_of_users
