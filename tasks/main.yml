@@ -1,12 +1,4 @@
 ---
-# tasks file for user-bastion
-
-- name: "Check required variables"
-  fail:
-    msg: "Variable '{{ item }}' is not defined. Please refer to README file."
-  when: item not in vars
-  with_items: "{{ required_vars }}"
-
 - name: Creating groups
   group:
     name: "{{ item }}"
