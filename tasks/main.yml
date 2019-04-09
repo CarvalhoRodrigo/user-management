@@ -5,26 +5,26 @@
   fail:
     msg: "Variable '{{ item }}' is not defined. Please refer to README file."
   when: item not in vars
-  with_items: "{{required_vars}}"
+  with_items: "{{ required_vars }}"
 
 - name: Creating groups
   group:
-    name: "{{item}}"
+    name: "{{ item }}"
     state: present
   with_items:
     - "{{ list_of_groups }}"
 
 - name: Creating users
   user:
-    name: "{{item.name}}"
+    name: "{{ item.name }}"
     state: present
-    groups: "{{item.group}}"
+    groups: "{{ item.group }}"
   with_items:
     - "{{ list_of_users }}"
 
 - name: adding authorizing key for each users
   authorized_key:
-    user: "{{item.name}}"
+    user: "{{ item.name }}"
     key: "{{ lookup('file', playbook_dir + '/' + item.public_key_path) }}"
     exclusive: yes
   with_items:
@@ -45,7 +45,7 @@
 
 - name: Add sudoers users to wheel group
   user:
-    name: "{{item.name}}"
+    name: "{{ item.name }}"
     groups: wheel
     append: yes
     state: present
