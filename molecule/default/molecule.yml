@@ -17,4 +17,17 @@ verifier:
   lint:
     name: yamllint
 scenario:
-  name: default
+  name: default  # optional
+  test_sequence:
+    - lint
+    - destroy
+    - dependency
+    - syntax
+    - create
+    - prepare
+    - converge
+    # - idempotence
+    - side_effect
+    - verify
+    - cleanup
+    - destroy

@@ -1,8 +1,18 @@
-# Molecule managed
-
 ---
-file:
-  /etc/hosts:
+
+group:
+  user_test:
     exists: true
-    owner: root
-    group: root
+  admin_test:
+    exists: true
+
+user:
+  admin1:
+    exists: true
+    groups:
+      - admin_test
+  user1:
+    exists: true
+    groups:
+      - users
+      - user_test

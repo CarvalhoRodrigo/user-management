@@ -50,17 +50,18 @@ Including an example of how to use your role (for instance, with variables passe
         name: sab-user-management-role
       vars:
         list_of_groups:
-          - group1
-          - group2
+          - user_test
+          - admin_test
         list_of_users:
-          - name: user1
-            group: group1
+          - name: admin1
+            group: admin_test
             sudo: yes
+          - name: user1
+            group: user_test
+            groups:
+              - users
+              - user_test
             public_key_path: ../secrets/user1.key.pub
-          - name: user2
-            group: group2
-            sudo: no
-            public_key_path: ../secrets/user2.key.pub
 ```
 
 License

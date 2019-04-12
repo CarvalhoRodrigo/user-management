@@ -10,7 +10,8 @@
   user:
     name: "{{ item.name }}"
     state: present
-    groups: "{{ item.group }}"
+    group: "{{ item.group }}"
+    groups: "{{ item.groups | default(item.group) }}"
   with_items:
     - "{{ list_of_users }}"
 
@@ -19,6 +20,7 @@
     user: "{{ item.name }}"
     key: "{{ lookup('file', playbook_dir + '/' + item.public_key_path) }}"
     exclusive: yes
+  when: item.public_key_path is defined
   with_items:
     - "{{ list_of_users }}"
 
@@ -42,6 +44,6 @@
     append: yes
     state: present
     createhome: yes
+  when: item.sudo is defined and item.sudo
   with_items:
     - "{{ list_of_users }}"
-  when: item.sudo

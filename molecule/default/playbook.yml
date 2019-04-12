@@ -3,3 +3,15 @@
   hosts: all
   roles:
     - role: user-management
+      list_of_groups:
+        - user_test
+        - admin_test
+      list_of_users:
+        - name: admin1
+          group: admin_test
+          sudo: yes
+        - name: user1
+          group: user_test
+          groups:
+            - users
+            - user_test
