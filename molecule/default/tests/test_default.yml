@@ -16,3 +16,9 @@ user:
     groups:
       - users
       - user_test
+
+command:
+  sudo -l -U admin1 ls:
+    exit-status: 0
+  sudo -l -U user1 ls:
+    exit-status: 1
